@@ -1,9 +1,11 @@
 
 const path = require('path');
 const express = require('express');
-const router = express.Router();
 const rootDir = require('../util/path');
-const products = [];
+const router = express.Router();
+const url = require('url');
+
+let products = [];
 
 router.get('/add-product', (req, res, next) => {
     //res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
@@ -21,7 +23,19 @@ router.get('/users', (req, res, next) => {
 });
 
 router.post('/add-product', (req, res, next) => {
-    products.push({title: req.body.title});
+    products.push({title: req.body.title, description: req.body.description, price: req.body.price, img: req.body.img});
+    res.redirect('/'); 
+});
+
+router.get('/delete-product', (req, res, next) => {
+    let queryObject = url.parse(req.url,true).query;
+    //console.log(req.body.title);
+   // if(queryObject.action){
+        //if(queryObject.action == 'delete'){
+            products = products.filter(x => x.title !== queryObject.book);
+        //}
+  //  }
+    //products = products.filter(x => x.title != req.body.title);
     res.redirect('/'); 
 });
 
